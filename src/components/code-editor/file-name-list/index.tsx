@@ -17,6 +17,7 @@ export default function FileNameList() {
       {fileNames.map((fileName) => {
         return (
           <FileNameItem
+            key={fileName}
             fileName={fileName}
             selectedFileName={selectedFileName}
             setSelectedFileName={setSelectedFileName}

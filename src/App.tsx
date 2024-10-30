@@ -1,7 +1,7 @@
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { Header, CodeEditor, Preview, PlaygroundProvider } from "./components";
-import "./App.scss";
+import "./App.css";
 
 function App() {
   return (
