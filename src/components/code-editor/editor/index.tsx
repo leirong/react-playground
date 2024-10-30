@@ -1,43 +1,43 @@
-import MonacoEditor, { EditorProps, OnMount } from "@monaco-editor/react"
-import { createATA } from "./ata"
-import { editor } from "monaco-editor"
+import MonacoEditor, { EditorProps, OnMount } from "@monaco-editor/react";
+import { createATA } from "./ata";
+import { editor } from "monaco-editor";
 
 export interface EditorFile {
-  name: string
-  value: string
-  language: string
+  name: string;
+  value?: string;
+  language: string;
 }
 
 interface IEditorProps {
-  file: EditorFile
-  onChange?: EditorProps["onChange"]
-  options?: editor.IStandaloneEditorConstructionOptions
+  file: EditorFile;
+  onChange?: EditorProps["onChange"];
+  options?: editor.IStandaloneEditorConstructionOptions;
 }
 
 export default function Editor(props: IEditorProps) {
-  const { file, onChange, options } = props
+  const { file, onChange, options } = props;
   const handleEditorMount: OnMount = (editor, monaco) => {
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyJ, () => {
-      editor.getAction("editor.action.formatDocument")?.run()
-    })
+      editor.getAction("editor.action.formatDocument")?.run();
+    });
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
       jsx: monaco.languages.typescript.JsxEmit.Preserve,
       esModuleInterop: true,
-    })
+    });
 
     const ata = createATA((code, path) => {
       monaco.languages.typescript.typescriptDefaults.addExtraLib(
         code,
         `file://${path}`
-      )
-    })
+      );
+    });
 
     editor.onDidChangeModelContent(() => {
-      ata(editor.getValue())
-    })
+      ata(editor.getValue());
+    });
 
-    ata(editor.getValue())
-  }
+    ata(editor.getValue());
+  };
   return (
     <MonacoEditor
       height="100%"
@@ -48,5 +48,5 @@ export default function Editor(props: IEditorProps) {
       onMount={handleEditorMount}
       options={options}
     />
-  )
+  );
 }
