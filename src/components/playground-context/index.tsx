@@ -6,11 +6,7 @@ import {
   useState,
 } from "react";
 import { getLanguageByFileName } from "../../utils/file";
-import {
-  defaultFileName,
-  defaultFiles,
-  getDefaultFilesFromUrl,
-} from "./default";
+import { defaultFileName, getDefaultFilesFromUrl } from "./default";
 import styles from "./index.module.scss";
 import classNames from "classnames";
 import { compress } from "../../utils/compress";
