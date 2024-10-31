@@ -27,11 +27,9 @@ export default function FileNameList() {
     setCreating(true);
   };
 
-  console.log("fileNames", fileNames);
   return (
     <div className={styles["file-name-list"]}>
       {fileNames.map((fileName, index) => {
-        // console.log(fileName, files[fileName]);
         return (
           <FileNameItem
             index={index}

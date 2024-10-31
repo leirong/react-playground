@@ -5,7 +5,7 @@ import { debounce } from "lodash-es";
 import styles from "./index.module.scss";
 
 const CodeEditor = () => {
-  const { files, setFiles, selectedFileName } = usePlayground();
+  const { files, setFiles, selectedFileName, theme } = usePlayground();
   const file = files[selectedFileName];
 
   const handleChange = (value?: string) => {
@@ -33,6 +33,7 @@ const CodeEditor = () => {
             verticalScrollbarSize: 6,
             horizontalScrollbarSize: 6,
           },
+          theme: `vs-${theme}`,
         }}
       />
     </div>

@@ -4,6 +4,7 @@ import { compile } from "../../utils/babel";
 // import Editor from "../code-editor/editor";
 import iframeRaw from "../../iframe.html?raw";
 import { IMPORT_MAP_FILE_NAME } from "../playground-context/default";
+import Message from "../message";
 
 const Preview = () => {
   const { files } = usePlayground();
@@ -31,11 +32,30 @@ const Preview = () => {
 
   useEffect(() => {
     setIframeUrl(getIframeUrl());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files[IMPORT_MAP_FILE_NAME].value, compiledCode]);
 
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    const callback = (e: MessageEvent) => {
+      console.log("e.data", e.data);
+      if (e.data.type === "ERROR") {
+        setError(e.data.message);
+      }
+    };
+    window.addEventListener("message", callback);
+    return () => {
+      window.removeEventListener("message", callback);
+    };
+  }, []);
+
   return (
-    <div style={{ height: "100%" }}>
+    <div
+      style={{
+        height: "100%",
+      }}
+    >
       <iframe
         src={iframeUrl}
         style={{
@@ -52,6 +72,7 @@ const Preview = () => {
           language: "javascript",
         }}
       /> */}
+      <Message type="error" content={error} />
     </div>
   );
 };
