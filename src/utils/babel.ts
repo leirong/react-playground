@@ -1,10 +1,11 @@
 import { transform } from "@babel/standalone";
 import { File, Files } from "../components";
 import { PluginObj } from "@babel/core";
+import { MAIN_TSX_FILE_NAME } from "../components/playground-context/default";
 // import Sass from "sass.js/dist/sass.sync.js";
 
 export const beforeTransformCode = (filename: string, code: string) => {
-  const reactRegex = /import\s+React/g;
+  const reactRegex = /import\s+React\s/g;
   if (
     (filename.endsWith(".jsx") || filename.endsWith(".tsx")) &&
     !reactRegex.test(code)
@@ -32,12 +33,11 @@ export const transformCode = (filename: string, code: string, files: Files) => {
 
 const JsJsxTsxTsRegex = /\.(js|jsx|tsx|ts)$/;
 
-export const compile = (selectedFileName: string, files: Files) => {
-  //   const entryFileName = MAIN_TSX_FILE_NAME;
-  if (!JsJsxTsxTsRegex.test(selectedFileName)) return "";
-  const file = files[selectedFileName];
+export const compile = (files: Files) => {
+  const entryFileName = MAIN_TSX_FILE_NAME;
+  const file = files[entryFileName];
   if (file?.value) {
-    return transformCode(selectedFileName, file.value, files);
+    return transformCode(entryFileName, file.value, files);
   }
   return "";
 };

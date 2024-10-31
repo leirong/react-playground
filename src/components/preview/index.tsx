@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { usePlayground } from "../playground-context";
 import { compile } from "../../utils/babel";
-import Editor from "../code-editor/editor";
+// import Editor from "../code-editor/editor";
 import iframeRaw from "../../iframe.html?raw";
 import { IMPORT_MAP_FILE_NAME } from "../playground-context/default";
 
 const Preview = () => {
-  const { selectedFileName, files } = usePlayground();
+  const { files } = usePlayground();
   const [compiledCode, setCompiledCode] = useState<string>("");
 
   useEffect(() => {
-    const res = compile(selectedFileName, files);
+    const res = compile(files);
     setCompiledCode(res);
-  }, [files, selectedFileName]);
+  }, [files]);
 
   const getIframeUrl = () => {
     const res = iframeRaw
@@ -31,6 +31,7 @@ const Preview = () => {
 
   useEffect(() => {
     setIframeUrl(getIframeUrl());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [files[IMPORT_MAP_FILE_NAME].value, compiledCode]);
 
   return (
