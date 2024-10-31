@@ -125,3 +125,17 @@ function customResolver(files: Files): PluginObj {
     },
   };
 }
+
+self.addEventListener("message", ({ data }) => {
+  try {
+    self.postMessage({
+      type: "COMPILED_CODE",
+      data: compile(data),
+    });
+  } catch (error) {
+    self.postMessage({
+      type: "ERROR",
+      error,
+    });
+  }
+});

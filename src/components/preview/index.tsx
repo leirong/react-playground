@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePlayground } from "../playground-context";
-import { compile } from "../../utils/babel";
+import CompilerWorker from "../../utils/compiler.worker?worker";
 // import Editor from "../code-editor/editor";
 import iframeRaw from "../../iframe.html?raw";
 import { IMPORT_MAP_FILE_NAME } from "../playground-context/default";
@@ -10,9 +10,28 @@ const Preview = () => {
   const { files } = usePlayground();
   const [compiledCode, setCompiledCode] = useState<string>("");
 
+  const compilerWorkerRef = useRef<Worker>();
+
+  // useEffect(() => {
+  //   const res = compile(files);
+  //   setCompiledCode(res);
+  // }, [files]);
+
   useEffect(() => {
-    const res = compile(files);
-    setCompiledCode(res);
+    if (!compilerWorkerRef.current) {
+      compilerWorkerRef.current = new CompilerWorker();
+      compilerWorkerRef.current.addEventListener("message", ({ data }) => {
+        // console.log("worker", data);
+        if (data.type === "COMPILED_CODE") {
+          setCompiledCode(data.data);
+        }
+      });
+    }
+  });
+  useEffect(() => {
+    if (compilerWorkerRef.current) {
+      compilerWorkerRef.current.postMessage(files);
+    }
   }, [files]);
 
   const getIframeUrl = () => {
