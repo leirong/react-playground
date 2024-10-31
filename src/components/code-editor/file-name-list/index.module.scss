@@ -22,3 +22,15 @@
     background-color: #ddd;
   }
 }
+
+.add-file {
+  width: 40px;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
+  transition: all 0.3s;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+}

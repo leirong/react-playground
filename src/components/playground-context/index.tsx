@@ -6,6 +6,7 @@ export interface File {
   name: string;
   value?: string;
   language: string;
+  readonly: boolean;
 }
 
 export interface Files {
@@ -38,30 +39,27 @@ export const PlaygroundProvider = ({ children }: PropsWithChildren) => {
         name: fileName,
         value: "",
         language: getLanguageByFileName(fileName),
+        readonly: false,
       },
     }));
   };
   const removeFile = (fileName: string) => {
-    setFiles((prevFiles) => {
-      const { [fileName]: _, ...rest } = prevFiles;
-      return rest;
-    });
+    const { [fileName]: _, ...rest } = files;
+    setFiles({ ...rest });
   };
 
   const updateFileName = (prevFileName: string, nextFileName: string) => {
+    if (!files[prevFileName] || !nextFileName) return;
     setFiles((prevFiles) => {
-      const file = prevFiles[prevFileName];
-      if (file) {
-        return {
-          ...prevFiles,
-          [nextFileName]: {
-            ...file,
-            name: nextFileName,
-            language: getLanguageByFileName(nextFileName),
-          },
-        };
-      }
-      return prevFiles;
+      const { [prevFileName]: value, ...rest } = prevFiles;
+      return {
+        ...rest,
+        [nextFileName]: {
+          ...value,
+          name: nextFileName,
+          language: getLanguageByFileName(nextFileName),
+        },
+      };
     });
   };
   return (

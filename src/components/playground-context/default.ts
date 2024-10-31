@@ -19,20 +19,24 @@ export const defaultFiles: Files = {
     name: MAIN_TSX_FILE_NAME,
     value: mainTsx,
     language: getLanguageByFileName(MAIN_TSX_FILE_NAME),
+    readonly: true,
   },
   [APP_TSX_FILE_NAME]: {
     name: APP_TSX_FILE_NAME,
     value: appTsx,
     language: getLanguageByFileName(APP_TSX_FILE_NAME),
+    readonly: true,
   },
   [APP_SCSS_FILE_NAME]: {
     name: APP_SCSS_FILE_NAME,
     value: appcss,
     language: getLanguageByFileName(APP_SCSS_FILE_NAME),
+    readonly: false,
   },
   [IMPORT_MAP_FILE_NAME]: {
     name: IMPORT_MAP_FILE_NAME,
     value: importMap,
     language: getLanguageByFileName(IMPORT_MAP_FILE_NAME),
+    readonly: true,
   },
 };
