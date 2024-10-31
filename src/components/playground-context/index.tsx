@@ -1,8 +1,19 @@
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { getLanguageByFileName } from "../../utils/file";
-import { defaultFileName, defaultFiles } from "./default";
+import {
+  defaultFileName,
+  defaultFiles,
+  getDefaultFilesFromUrl,
+} from "./default";
 import styles from "./index.module.scss";
 import classNames from "classnames";
+import { compress } from "../../utils/compress";
 
 export interface File {
   name: string;
@@ -35,7 +46,13 @@ export const PlaygroundContext = createContext<PlaygroundContextProps>({
 
 export const PlaygroundProvider = ({ children }: PropsWithChildren) => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [files, setFiles] = useState<Files>(defaultFiles);
+  const [files, setFiles] = useState<Files>(getDefaultFilesFromUrl());
+
+  useEffect(() => {
+    const hash = compress(JSON.stringify(files));
+    window.location.hash = hash;
+  }, [files]);
+
   const [selectedFileName, setSelectedFileName] =
     useState<string>(defaultFileName);
 

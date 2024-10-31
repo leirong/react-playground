@@ -13,6 +13,7 @@ import mainTsx from "../../templates/main.tsx?raw";
 import appTsx from "../../templates/App.tsx?raw";
 import appcss from "../../templates/App.css?raw";
 import importMap from "../../templates/import-map.json?raw";
+import { uncompress } from "../../utils/compress";
 
 export const defaultFiles: Files = {
   [MAIN_TSX_FILE_NAME]: {
@@ -39,4 +40,15 @@ export const defaultFiles: Files = {
     language: getLanguageByFileName(IMPORT_MAP_FILE_NAME),
     readonly: true,
   },
+};
+
+export const getDefaultFilesFromUrl = () => {
+  try {
+    const hash = uncompress(window.location.hash.slice(1));
+    const files = JSON.parse(hash);
+    return files;
+  } catch (error) {
+    console.log("error", error);
+    return defaultFiles;
+  }
 };

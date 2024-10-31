@@ -39,7 +39,6 @@ const Preview = () => {
 
   useEffect(() => {
     const callback = (e: MessageEvent) => {
-      console.log("e.data", e.data);
       if (e.data.type === "ERROR") {
         setError(e.data.message);
       }
